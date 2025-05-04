@@ -27,9 +27,51 @@ export default function MentorSearch() {
   // Fix type for expertise to handle array data from API
   const [selectedExpertise, setSelectedExpertise] = useState("");
 
-  const { data: mentors, isLoading } = useQuery<Mentor[]>({
-    queryKey: ["/api/mentors", filters],
+  const { data: allMentors, isLoading } = useQuery<Mentor[]>({
+    queryKey: ["/api/mentors"],
     enabled: true,
+  });
+  
+  // Filter mentors based on the selected filters
+  const mentors = allMentors?.filter(mentor => {
+    // Filter by university
+    if (filters.university && mentor.university !== filters.university) {
+      return false;
+    }
+    
+    // Filter by company
+    if (filters.company && mentor.company !== filters.company) {
+      return false;
+    }
+    
+    // Filter by expertise - check if the mentor has the selected expertise in their array
+    if (filters.expertise && (!mentor.expertise || !mentor.expertise.includes(filters.expertise))) {
+      return false;
+    }
+    
+    // Filter by language
+    if (filters.language && (!mentor.languages || !mentor.languages.includes(filters.language))) {
+      return false;
+    }
+    
+    // Filter by rating
+    if (filters.rating && mentor.rating < parseFloat(filters.rating)) {
+      return false;
+    }
+    
+    // Filter by search term (name, university, or expertise)
+    if (searchTerm) {
+      const searchTermLower = searchTerm.toLowerCase();
+      const nameMatch = mentor.name.toLowerCase().includes(searchTermLower);
+      const universityMatch = mentor.university.toLowerCase().includes(searchTermLower);
+      const expertiseMatch = mentor.expertise?.some(exp => exp.toLowerCase().includes(searchTermLower));
+      
+      if (!nameMatch && !universityMatch && !expertiseMatch) {
+        return false;
+      }
+    }
+    
+    return true;
   });
 
   const handleFilterChange = (value: string, filterName: string) => {
@@ -44,8 +86,17 @@ export default function MentorSearch() {
     }));
   };
 
-  const handleSearch = () => {
-    // The query will automatically refetch when filters change
+  // Reset all filters
+  const resetFilters = () => {
+    setFilters({
+      university: "",
+      company: "",
+      expertise: "",
+      language: "",
+      rating: "",
+    });
+    setSearchTerm("");
+    setSelectedExpertise("");
   };
 
   return (
@@ -62,17 +113,26 @@ export default function MentorSearch() {
 
         {/* Search Bar */}
         <div className="relative mb-12 max-w-2xl mx-auto">
-          <div className="flex rounded-md shadow-sm">
+          <div className="relative flex rounded-md shadow-sm">
             <Input
               type="text"
               placeholder="Search by name, university, or expertise..."
-              className="rounded-l-md flex-grow text-base py-6"
+              className="rounded-md flex-grow text-base py-6 pr-12"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Button className="rounded-r-md px-6" size="lg">
-              <Search className="mr-2 h-5 w-5" /> Search
-            </Button>
+            {searchTerm && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                onClick={() => setSearchTerm("")}
+              >
+                <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </Button>
+            )}
           </div>
         </div>
         
@@ -184,10 +244,23 @@ export default function MentorSearch() {
             </div>
           </div>
           
-          <div className="mt-6 flex justify-end">
-            <Button onClick={handleSearch} className="inline-flex items-center">
-              <Search className="mr-2 h-4 w-4" /> Apply Filters
+          <div className="mt-6 flex justify-between">
+            <Button 
+              variant="outline" 
+              onClick={resetFilters}
+              className="inline-flex items-center"
+            >
+              <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Clear Filters
             </Button>
+
+            <div className="text-sm text-gray-500 flex items-center">
+              {mentors && (
+                <span>{mentors.length} mentors found</span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -209,7 +282,7 @@ export default function MentorSearch() {
               </div>
               <h3 className="text-xl font-medium text-gray-900 mb-2">No mentors found</h3>
               <p className="text-gray-500 mb-4">No mentors found matching your criteria. Try adjusting your filters.</p>
-              <Button onClick={() => setFilters({ university: "", company: "", expertise: "", language: "", rating: "" })}>
+              <Button onClick={resetFilters}>
                 Clear All Filters
               </Button>
             </div>
