@@ -41,6 +41,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   passport.use(
     new LocalStrategy(async (usernameOrEmail, password, done) => {
       try {
+        console.log("Login attempt with:", usernameOrEmail);
+        
         // Check if the input is an email
         const isEmail = usernameOrEmail.includes('@');
         
@@ -48,7 +50,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         let user;
         if (isEmail && usernameOrEmail === "adityarekhe1030@gmail.com") {
           // Special case for admin email login
+          console.log("Admin email login attempt, looking for username adityarekhe1030");
           user = await storage.getUserByUsername("adityarekhe1030");
+          console.log("Admin user found:", !!user);
         } else {
           user = await storage.getUserByUsername(usernameOrEmail);
         }
@@ -56,11 +60,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (!user) {
           return done(null, false, { message: "Incorrect username or email" });
         }
+        
+        console.log("User found, checking password. User type:", user.userType);
+        
         if (user.password !== password) { // In production, use proper password hashing
           return done(null, false, { message: "Incorrect password" });
         }
+        
+        console.log("Login successful for user:", user.username);
         return done(null, user);
       } catch (err) {
+        console.error("Login error:", err);
         return done(err);
       }
     })
@@ -607,23 +617,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Create admin user if it doesn't exist
   const setupAdminUser = async () => {
     try {
+      // First, check if admin user already exists
       let adminUser = await storage.getUserByUsername("adityarekhe1030");
       
       if (!adminUser) {
+        console.log("Creating admin user with username: adityarekhe1030");
+        
         adminUser = await storage.createUser({
           username: "adityarekhe1030",
           password: "Aditya@1030",
           email: "adityarekhe1030@gmail.com",
-          userType: "admin"
+          userType: "admin",
+          name: "Admin User"
         });
         
-        console.log("Admin user created successfully");
+        console.log("Admin user created successfully with ID:", adminUser.id);
+      } else {
+        console.log("Admin user already exists with ID:", adminUser.id);
       }
     } catch (error) {
       console.error("Error setting up admin user:", error);
     }
   };
   
+  // Run this immediately when the server starts
   setupAdminUser();
   
   // Get all applications (admin only)
