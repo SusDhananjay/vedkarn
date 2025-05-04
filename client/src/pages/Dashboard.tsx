@@ -11,6 +11,7 @@ import { Link } from "wouter";
 import { Calendar, MessageSquare, Video, Star, Clock, CheckCircle, XCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserBooking, Conversation } from "@shared/schema";
+import UserCalendar from "@/components/dashboard/UserCalendar";
 
 export default function Dashboard() {
   const { user, isAuthenticated } = useAuth();

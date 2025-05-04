@@ -136,25 +136,107 @@ export class MemStorage implements IStorage {
       userType: "mentor"
     });
     
-    // Update user names
+    const user5 = await this.createUser({
+      username: "student3",
+      password: "password",
+      email: "student3@example.com",
+      userType: "student"
+    });
+    
+    const user6 = await this.createUser({
+      username: "mentor3",
+      password: "password",
+      email: "mentor3@example.com",
+      userType: "mentor"
+    });
+    
+    const user7 = await this.createUser({
+      username: "mentor4",
+      password: "password",
+      email: "mentor4@example.com",
+      userType: "mentor"
+    });
+    
+    const user8 = await this.createUser({
+      username: "mentor5",
+      password: "password",
+      email: "mentor5@example.com",
+      userType: "mentor"
+    });
+    
+    const user9 = await this.createUser({
+      username: "mentor6",
+      password: "password",
+      email: "mentor6@example.com",
+      userType: "mentor"
+    });
+    
+    const user10 = await this.createUser({
+      username: "mentor7",
+      password: "password",
+      email: "mentor7@example.com",
+      userType: "mentor"
+    });
+    
+    // Update user names and profile pictures
     this.usersData.set(user1.id, {
       ...user1,
-      name: "Neha Gupta"
+      name: "Neha Gupta",
+      profilePicture: "https://randomuser.me/api/portraits/women/65.jpg"
     });
     
     this.usersData.set(user2.id, {
       ...user2,
-      name: "Priya Sharma"
+      name: "Priya Sharma",
+      profilePicture: "https://randomuser.me/api/portraits/women/44.jpg"
     });
     
     this.usersData.set(user3.id, {
       ...user3,
-      name: "Arjun Reddy"
+      name: "Arjun Reddy",
+      profilePicture: "https://randomuser.me/api/portraits/men/32.jpg"
     });
     
     this.usersData.set(user4.id, {
       ...user4,
-      name: "Rahul Khanna"
+      name: "Rahul Khanna",
+      profilePicture: "https://randomuser.me/api/portraits/men/79.jpg"
+    });
+    
+    this.usersData.set(user5.id, {
+      ...user5,
+      name: "Aisha Patel",
+      profilePicture: "https://randomuser.me/api/portraits/women/55.jpg"
+    });
+    
+    this.usersData.set(user6.id, {
+      ...user6,
+      name: "Vikram Singh",
+      profilePicture: "https://randomuser.me/api/portraits/men/45.jpg"
+    });
+    
+    this.usersData.set(user7.id, {
+      ...user7,
+      name: "Deepa Murthy",
+      profilePicture: "https://randomuser.me/api/portraits/women/23.jpg"
+    });
+    
+    this.usersData.set(user8.id, {
+      ...user8,
+      name: "Akash Mehta",
+      profilePicture: "https://randomuser.me/api/portraits/men/62.jpg"
+    });
+    
+    this.usersData.set(user9.id, {
+      ...user9,
+      name: "Ananya Desai",
+      profilePicture: "https://randomuser.me/api/portraits/women/17.jpg"
+    });
+    
+    this.usersData.set(user10.id, {
+      ...user10,
+      name: "Karan Malhotra",
+      profilePicture: "https://randomuser.me/api/portraits/men/53.jpg"
     });
     
     // Sample mentors
@@ -193,6 +275,101 @@ export class MemStorage implements IStorage {
         "CAT Exam Preparation",
         "Case Interview Practice",
         "Consulting Career Path"
+      ]
+    });
+    
+    const mentor3 = await this.createMentor({
+      userId: user6.id,
+      bio: "Mechanical Engineering graduate from IIT Delhi currently working at Tata Motors. Experienced in automotive design and manufacturing. Can mentor for JEE preparation and engineering career paths.",
+      university: "IIT Delhi",
+      degree: "B.Tech in Mechanical Engineering",
+      graduationYear: "2017",
+      company: "Tata Motors",
+      title: "Senior Design Engineer",
+      experience: "4",
+      expertise: ["Mechanical Engineering", "JEE Advanced", "Automotive"],
+      languages: ["English", "Hindi", "Punjabi"],
+      mentorshipAreas: [
+        "JEE Preparation",
+        "Engineering Basics",
+        "Career in Manufacturing",
+        "Internship Guidance"
+      ]
+    });
+    
+    const mentor4 = await this.createMentor({
+      userId: user7.id,
+      bio: "Data Scientist at Amazon with background in Statistics and Machine Learning. PhD from IISc Bangalore. Can help with data science career transitions, interview preparation, and research guidance.",
+      university: "IISc Bangalore",
+      degree: "PhD in Computer Science",
+      graduationYear: "2018",
+      company: "Amazon",
+      title: "Senior Data Scientist",
+      experience: "7",
+      expertise: ["Data Science", "Machine Learning", "AI Research"],
+      languages: ["English", "Kannada", "Tamil"],
+      mentorshipAreas: [
+        "Data Science Career",
+        "ML Interview Preparation",
+        "Research Paper Guidance",
+        "PhD Applications"
+      ]
+    });
+    
+    const mentor5 = await this.createMentor({
+      userId: user8.id,
+      bio: "UPSC Civil Services officer (IAS) with AIR 42. Can mentor for UPSC preparation, strategy, and interview techniques. Graduated from Delhi University before clearing the exam.",
+      university: "Delhi University",
+      degree: "BA Economics (Hons)",
+      graduationYear: "2014",
+      company: "Indian Administrative Service",
+      title: "IAS Officer",
+      experience: "6",
+      expertise: ["UPSC", "Civil Services", "Public Policy"],
+      languages: ["English", "Hindi", "Marathi"],
+      mentorshipAreas: [
+        "UPSC Preparation Strategy",
+        "Mains Answer Writing",
+        "Interview Techniques",
+        "Optional Subject Selection"
+      ]
+    });
+    
+    const mentor6 = await this.createMentor({
+      userId: user9.id,
+      bio: "Chartered Accountant working at EY with specialization in taxation and audit. Can guide CA aspirants on exam preparation, articleship, and career progression in finance.",
+      university: "ICAI",
+      degree: "Chartered Accountancy",
+      graduationYear: "2015",
+      company: "Ernst & Young",
+      title: "Senior Manager - Taxation",
+      experience: "8",
+      expertise: ["Chartered Accountancy", "Taxation", "Financial Analysis"],
+      languages: ["English", "Hindi", "Gujarati"],
+      mentorshipAreas: [
+        "CA Exam Strategy",
+        "Articleship Guidance",
+        "Interview Preparation",
+        "Career in Big 4"
+      ]
+    });
+    
+    const mentor7 = await this.createMentor({
+      userId: user10.id,
+      bio: "Product Manager at Flipkart with background in Computer Engineering. MBA from ISB Hyderabad. Can mentor for product management roles, B-school applications, and tech career transitions.",
+      university: "ISB Hyderabad",
+      degree: "MBA",
+      graduationYear: "2019",
+      company: "Flipkart",
+      title: "Senior Product Manager",
+      experience: "5",
+      expertise: ["Product Management", "MBA", "Tech Career"],
+      languages: ["English", "Hindi"],
+      mentorshipAreas: [
+        "Product Management Career",
+        "MBA Applications",
+        "GMAT Preparation",
+        "Startup Advice"
       ]
     });
     
@@ -256,6 +433,137 @@ export class MemStorage implements IStorage {
         mentorId: mentor2.id,
         startTime: eveningStart,
         endTime: eveningEnd
+      });
+    }
+    
+    // Sample slots for other mentors
+    // Mentor 3 slots
+    for (let i = 1; i <= 7; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      
+      // Morning slot
+      const morningStart = new Date(date);
+      morningStart.setHours(9, 0, 0);
+      const morningEnd = new Date(date);
+      morningEnd.setHours(10, 0, 0);
+      
+      await this.createSlot({
+        mentorId: mentor3.id,
+        startTime: morningStart,
+        endTime: morningEnd
+      });
+      
+      // Evening slot
+      const eveningStart = new Date(date);
+      eveningStart.setHours(19, 0, 0);
+      const eveningEnd = new Date(date);
+      eveningEnd.setHours(20, 0, 0);
+      
+      await this.createSlot({
+        mentorId: mentor3.id,
+        startTime: eveningStart,
+        endTime: eveningEnd
+      });
+    }
+    
+    // Mentor 4 slots
+    for (let i = 1; i <= 7; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      
+      // Afternoon slot
+      const afternoonStart = new Date(date);
+      afternoonStart.setHours(12, 0, 0);
+      const afternoonEnd = new Date(date);
+      afternoonEnd.setHours(13, 0, 0);
+      
+      await this.createSlot({
+        mentorId: mentor4.id,
+        startTime: afternoonStart,
+        endTime: afternoonEnd
+      });
+      
+      // Evening slot
+      const eveningStart = new Date(date);
+      eveningStart.setHours(21, 0, 0);
+      const eveningEnd = new Date(date);
+      eveningEnd.setHours(22, 0, 0);
+      
+      await this.createSlot({
+        mentorId: mentor4.id,
+        startTime: eveningStart,
+        endTime: eveningEnd
+      });
+    }
+    
+    // Mentor 5 slots
+    for (let i = 1; i <= 7; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      
+      if (i % 2 === 0) { // Even days only
+        const eveningStart = new Date(date);
+        eveningStart.setHours(18, 30, 0);
+        const eveningEnd = new Date(date);
+        eveningEnd.setHours(19, 30, 0);
+        
+        await this.createSlot({
+          mentorId: mentor5.id,
+          startTime: eveningStart,
+          endTime: eveningEnd
+        });
+      }
+    }
+    
+    // Mentor 6 slots
+    for (let i = 1; i <= 7; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      
+      if (i % 2 === 1) { // Odd days only
+        const morningStart = new Date(date);
+        morningStart.setHours(7, 0, 0);
+        const morningEnd = new Date(date);
+        morningEnd.setHours(8, 0, 0);
+        
+        await this.createSlot({
+          mentorId: mentor6.id,
+          startTime: morningStart,
+          endTime: morningEnd
+        });
+      }
+      
+      // Weekend evening slot
+      if (i % 7 === 0 || i % 7 === 6) { // Saturday or Sunday
+        const eveningStart = new Date(date);
+        eveningStart.setHours(16, 0, 0);
+        const eveningEnd = new Date(date);
+        eveningEnd.setHours(17, 0, 0);
+        
+        await this.createSlot({
+          mentorId: mentor6.id,
+          startTime: eveningStart,
+          endTime: eveningEnd
+        });
+      }
+    }
+    
+    // Mentor 7 slots
+    for (let i = 1; i <= 7; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      
+      // Late afternoon slot
+      const afternoonStart = new Date(date);
+      afternoonStart.setHours(16, 30, 0);
+      const afternoonEnd = new Date(date);
+      afternoonEnd.setHours(17, 30, 0);
+      
+      await this.createSlot({
+        mentorId: mentor7.id,
+        startTime: afternoonStart,
+        endTime: afternoonEnd
       });
     }
     
