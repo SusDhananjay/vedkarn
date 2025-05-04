@@ -495,6 +495,89 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Error sending message" });
     }
   });
+  
+  // Admin routes
+  // Create admin user if it doesn't exist
+  const setupAdminUser = async () => {
+    try {
+      let adminUser = await storage.getUserByUsername("adityarekhe1030");
+      
+      if (!adminUser) {
+        adminUser = await storage.createUser({
+          username: "adityarekhe1030",
+          password: "Aditya@1030",
+          email: "adityarekhe1030@gmail.com",
+          userType: "admin"
+        });
+        
+        console.log("Admin user created successfully");
+      }
+    } catch (error) {
+      console.error("Error setting up admin user:", error);
+    }
+  };
+  
+  setupAdminUser();
+  
+  // Middleware to check if user is admin
+  const isAdmin = (req: any, res: any, next: any) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "You must be logged in" });
+    }
+    
+    if (req.user.userType !== "admin") {
+      return res.status(403).json({ message: "Access denied: Admin permission required" });
+    }
+    
+    next();
+  };
+  
+  // Get all applications (admin only)
+  app.get("/api/admin/applications", isAdmin, async (req, res) => {
+    try {
+      const applications = await storage.getAllApplications();
+      res.json(applications);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching applications" });
+    }
+  });
+  
+  // Get specific application (admin only)
+  app.get("/api/admin/applications/:id", isAdmin, async (req, res) => {
+    try {
+      const applicationId = parseInt(req.params.id);
+      const application = await storage.getApplicationById(applicationId);
+      
+      if (!application) {
+        return res.status(404).json({ message: "Application not found" });
+      }
+      
+      res.json(application);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching application" });
+    }
+  });
+  
+  // Update application status (admin only)
+  app.post("/api/admin/applications/:id/update", isAdmin, async (req, res) => {
+    try {
+      const applicationId = parseInt(req.params.id);
+      const { status, reviewNotes } = req.body;
+      const adminId = (req.user as any).id;
+      
+      const application = await storage.getApplicationById(applicationId);
+      
+      if (!application) {
+        return res.status(404).json({ message: "Application not found" });
+      }
+      
+      await storage.updateApplicationStatus(applicationId, status, adminId, reviewNotes);
+      
+      res.json({ message: `Application ${status} successfully` });
+    } catch (error) {
+      res.status(500).json({ message: "Error updating application status" });
+    }
+  });
 
   return httpServer;
 }

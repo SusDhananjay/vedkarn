@@ -56,6 +56,9 @@ export interface IStorage {
   
   // Applications
   createMentorApplication(application: InsertApplication): Promise<Application>;
+  getAllApplications(): Promise<Application[]>;
+  getApplicationById(id: number): Promise<Application | undefined>;
+  updateApplicationStatus(id: number, status: string, reviewedBy: number, reviewNotes?: string): Promise<void>;
 }
 
 // In-memory storage implementation
@@ -1141,6 +1144,63 @@ export class MemStorage implements IStorage {
     
     this.applicationsData.set(id, application);
     return application;
+  }
+  
+  async getAllApplications(): Promise<Application[]> {
+    return Array.from(this.applicationsData.values());
+  }
+  
+  async getApplicationById(id: number): Promise<Application | undefined> {
+    return this.applicationsData.get(id);
+  }
+  
+  async updateApplicationStatus(id: number, status: string, reviewedBy: number, reviewNotes?: string): Promise<void> {
+    const application = this.applicationsData.get(id);
+    if (!application) {
+      throw new Error(`Application with ID ${id} not found`);
+    }
+    
+    // Update the application status
+    this.applicationsData.set(id, {
+      ...application,
+      status,
+      reviewedBy,
+      reviewNotes: reviewNotes || null,
+      updatedAt: new Date()
+    });
+    
+    // If the application is approved, create a mentor profile
+    if (status === "approved") {
+      const user = await this.getUser(application.userId);
+      if (!user) {
+        throw new Error(`User with ID ${application.userId} not found`);
+      }
+      
+      // Update user type to mentor
+      this.usersData.set(user.id, {
+        ...user,
+        userType: "mentor"
+      });
+      
+      // Parse expertise areas from string to array
+      const expertiseAreas = application.expertiseAreas.split(",").map(area => area.trim());
+      const languages = application.languages.split(",").map(lang => lang.trim());
+      
+      // Create mentor profile
+      await this.createMentor({
+        userId: user.id,
+        bio: application.bio,
+        university: application.university,
+        degree: application.degree,
+        graduationYear: application.graduationYear,
+        company: application.company,
+        title: application.title,
+        experience: application.experience,
+        expertise: expertiseAreas,
+        languages: languages,
+        mentorshipAreas: expertiseAreas
+      });
+    }
   }
 }
 

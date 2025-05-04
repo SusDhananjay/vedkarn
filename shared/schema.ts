@@ -9,7 +9,7 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   email: text("email").notNull().unique(),
   name: text("name"),
-  userType: text("user_type").notNull().default("student"),
+  userType: text("user_type", { enum: ["mentor", "student", "admin"] }).notNull().default("student"),
   profilePicture: text("profile_picture"),
   bio: text("bio"),
   university: text("university"),
