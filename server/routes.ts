@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer } from "ws";
 import { setupSignalingServer } from "./webrtc/signaling";
@@ -161,6 +161,102 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(201).json({ message: "Application submitted successfully", id: application.id });
     } catch (error) {
       res.status(500).json({ message: "Error submitting application" });
+    }
+  });
+  
+  // Admin Routes
+  // Middleware to check if user is admin
+  const isAdmin = (req: any, res: any, next: any) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    if ((req.user as any).userType !== "admin") {
+      return res.status(403).json({ message: "Access denied. Admin privileges required." });
+    }
+    
+    next();
+  };
+  
+  // Get all mentor applications
+  app.get("/api/admin/applications", isAdmin, async (req, res) => {
+    try {
+      const applications = await storage.getAllApplications();
+      res.json(applications);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching applications" });
+    }
+  });
+  
+  // Get application by ID
+  app.get("/api/admin/applications/:id", isAdmin, async (req, res) => {
+    try {
+      const applicationId = parseInt(req.params.id);
+      const application = await storage.getApplicationById(applicationId);
+      
+      if (!application) {
+        return res.status(404).json({ message: "Application not found" });
+      }
+      
+      res.json(application);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching application details" });
+    }
+  });
+  
+  // Update application status
+  app.post("/api/admin/applications/:id/update", isAdmin, async (req, res) => {
+    try {
+      const applicationId = parseInt(req.params.id);
+      const { status, reviewNotes } = req.body;
+      
+      if (!status || !["approved", "rejected", "pending"].includes(status)) {
+        return res.status(400).json({ message: "Invalid status" });
+      }
+      
+      // Get the admin user's ID
+      const adminId = (req.user as any).id;
+      
+      await storage.updateApplicationStatus(
+        applicationId, 
+        status, 
+        adminId, 
+        reviewNotes || undefined
+      );
+      
+      // If approved, create a mentor account from the application
+      if (status === "approved") {
+        const application = await storage.getApplicationById(applicationId);
+        if (application && application.userId) {
+          // Create mentor profile from application
+          const expertiseAreasArray = application.expertiseAreas.split(',').map(area => area.trim());
+          const insertMentor = {
+            userId: application.userId,
+            title: application.title,
+            bio: application.bio,
+            university: application.university,
+            degree: application.degree,
+            graduationYear: application.graduationYear,
+            company: application.company,
+            experience: application.experience,
+            expertise: expertiseAreasArray, // This is required
+            mentorshipAreas: expertiseAreasArray, // This is optional but we'll set it too
+            languages: application.languages.split(',').map(lang => lang.trim()),
+            // These fields are generated automatically so we don't need to specify them
+            // rating: 0,
+            // reviewCount: 0, 
+            // isVerified: true,
+            // isActive: true,
+          };
+          
+          await storage.createMentor(insertMentor);
+        }
+      }
+      
+      res.json({ message: `Application ${status} successfully` });
+    } catch (error) {
+      console.error("Error updating application:", error);
+      res.status(500).json({ message: "Error updating application" });
     }
   });
 
@@ -518,19 +614,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   };
   
   setupAdminUser();
-  
-  // Middleware to check if user is admin
-  const isAdmin = (req: any, res: any, next: any) => {
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ message: "You must be logged in" });
-    }
-    
-    if (req.user.userType !== "admin") {
-      return res.status(403).json({ message: "Access denied: Admin permission required" });
-    }
-    
-    next();
-  };
   
   // Get all applications (admin only)
   app.get("/api/admin/applications", isAdmin, async (req, res) => {
