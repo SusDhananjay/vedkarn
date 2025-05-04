@@ -22,6 +22,29 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ApplicationDetails from "@/components/admin/ApplicationDetails";
 
+interface Application {
+  id: number;
+  status: string;
+  name: string;
+  email: string;
+  phone: string;
+  title: string;
+  company: string;
+  university: string;
+  degree: string;
+  graduationYear: string;
+  experience: string;
+  bio: string;
+  expertiseAreas: string;
+  languages: string;
+  linkedinProfile?: string;
+  hearAboutUs: string;
+  reviewNotes?: string;
+  reviewedBy?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export default function AdminDashboard() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const [activeTab, setActiveTab] = useState("pending");
@@ -60,7 +83,7 @@ export default function AdminDashboard() {
 
   // Filter applications by status
   const filteredApplications = applications.filter(
-    (application: any) => application.status === activeTab
+    (application: Application) => application.status === activeTab
   );
 
   if (isLoading) {
@@ -118,7 +141,7 @@ export default function AdminDashboard() {
                       </p>
                     ) : (
                       <div className="space-y-2 max-h-[400px] overflow-y-auto">
-                        {filteredApplications.map((application: any) => (
+                        {filteredApplications.map((application: Application) => (
                           <div
                             key={application.id}
                             className={`p-3 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors ${
@@ -152,7 +175,7 @@ export default function AdminDashboard() {
                       </p>
                     ) : (
                       <div className="space-y-2 max-h-[400px] overflow-y-auto">
-                        {filteredApplications.map((application: any) => (
+                        {filteredApplications.map((application: Application) => (
                           <div
                             key={application.id}
                             className={`p-3 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors ${
@@ -188,7 +211,7 @@ export default function AdminDashboard() {
                       </p>
                     ) : (
                       <div className="space-y-2 max-h-[400px] overflow-y-auto">
-                        {filteredApplications.map((application: any) => (
+                        {filteredApplications.map((application: Application) => (
                           <div
                             key={application.id}
                             className={`p-3 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors ${
