@@ -5,7 +5,7 @@ interface User {
   username: string;
   name?: string;
   email?: string;
-  userType: "student" | "mentor";
+  userType: "student" | "mentor" | "admin";
   profilePicture?: string;
 }
 
