@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Redirect } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -15,9 +15,25 @@ import Messages from "@/pages/Messages";
 import VideoSession from "@/pages/VideoSession";
 import BecomeAMentorPage from "@/pages/BecomeAMentorPage";
 import AdminDashboard from "@/pages/AdminDashboard";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 
 function Router() {
+  const { user } = useAuth();
+  
+  // If the user is an admin, only show admin dashboard
+  if (user?.userType === "admin") {
+    return (
+      <Switch>
+        <Route path="/admin" component={AdminDashboard} />
+        {/* Redirect to admin dashboard from any other route */}
+        <Route path="*">
+          <Redirect to="/admin" />
+        </Route>
+      </Switch>
+    );
+  }
+  
+  // Regular user routes
   return (
     <Switch>
       <Route path="/" component={Home} />
@@ -28,7 +44,6 @@ function Router() {
       <Route path="/messages" component={Messages} />
       <Route path="/video-session/:id" component={VideoSession} />
       <Route path="/become-a-mentor" component={BecomeAMentorPage} />
-      <Route path="/admin" component={AdminDashboard} />
       <Route component={NotFound} />
     </Switch>
   );
