@@ -23,6 +23,9 @@ export default function MentorSearch() {
     language: "",
     rating: "",
   });
+  
+  // Fix type for expertise to handle array data from API
+  const [selectedExpertise, setSelectedExpertise] = useState("");
 
   const { data: mentors, isLoading } = useQuery<Mentor[]>({
     queryKey: ["/api/mentors", filters],
@@ -30,6 +33,11 @@ export default function MentorSearch() {
   });
 
   const handleFilterChange = (value: string, filterName: string) => {
+    if (filterName === "expertise") {
+      setSelectedExpertise(value);
+      // We'll filter the mentors based on if they have this expertise in their array
+    }
+    
     setFilters((prev) => ({
       ...prev,
       [filterName]: value,
