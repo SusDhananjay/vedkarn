@@ -71,7 +71,7 @@ export default function UserCalendar() {
     const availableSlotDates: Date[] = [];
 
     // Process bookings
-    if (bookings) {
+    if (bookings && Array.isArray(bookings)) {
       bookings.forEach((booking: any) => {
         const startDate = new Date(booking.startTime);
         const endDate = new Date(booking.endTime);
@@ -102,7 +102,7 @@ export default function UserCalendar() {
     }
 
     // Process available slots for mentors
-    if (user?.userType === "mentor" && availableSlots) {
+    if (user?.userType === "mentor" && availableSlots && Array.isArray(availableSlots)) {
       availableSlots.forEach((slot: any) => {
         const startDate = new Date(slot.startTime);
         const endDate = new Date(slot.endTime);

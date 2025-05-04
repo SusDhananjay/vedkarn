@@ -15,7 +15,7 @@ import UserCalendar from "@/components/dashboard/UserCalendar";
 
 export default function Dashboard() {
   const { user, isAuthenticated } = useAuth();
-  const [activeTab, setActiveTab] = useState("upcoming");
+  const [activeTab, setActiveTab] = useState("calendar");
 
   const { data: bookings, isLoading: isBookingsLoading } = useQuery<UserBooking[]>({
     queryKey: ["/api/bookings/user"],
@@ -133,8 +133,11 @@ export default function Dashboard() {
             <div className="lg:col-span-3">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="w-full mb-6">
+                  <TabsTrigger value="calendar" className="flex-1">
+                    <Calendar className="mr-2 h-4 w-4" /> Calendar
+                  </TabsTrigger>
                   <TabsTrigger value="upcoming" className="flex-1">
-                    <Calendar className="mr-2 h-4 w-4" /> Upcoming Sessions ({upcomingBookings.length})
+                    <Clock className="mr-2 h-4 w-4" /> Upcoming ({upcomingBookings.length})
                   </TabsTrigger>
                   <TabsTrigger value="past" className="flex-1">
                     <Clock className="mr-2 h-4 w-4" /> Past Sessions ({pastBookings.length})
@@ -143,6 +146,12 @@ export default function Dashboard() {
                     <MessageSquare className="mr-2 h-4 w-4" /> Messages ({conversations?.length || 0})
                   </TabsTrigger>
                 </TabsList>
+
+                {/* Calendar Tab */}
+                <TabsContent value="calendar">
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">Session Calendar</h2>
+                  <UserCalendar />
+                </TabsContent>
 
                 {/* Upcoming Sessions Tab */}
                 <TabsContent value="upcoming">
