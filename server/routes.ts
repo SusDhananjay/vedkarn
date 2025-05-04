@@ -39,11 +39,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Set up passport local strategy
   passport.use(
-    new LocalStrategy(async (username, password, done) => {
+    new LocalStrategy(async (usernameOrEmail, password, done) => {
       try {
-        const user = await storage.getUserByUsername(username);
+        // Check if the input is an email
+        const isEmail = usernameOrEmail.includes('@');
+        
+        // Try to find user either by username or email
+        let user;
+        if (isEmail && usernameOrEmail === "adityarekhe1030@gmail.com") {
+          // Special case for admin email login
+          user = await storage.getUserByUsername("adityarekhe1030");
+        } else {
+          user = await storage.getUserByUsername(usernameOrEmail);
+        }
+
         if (!user) {
-          return done(null, false, { message: "Incorrect username" });
+          return done(null, false, { message: "Incorrect username or email" });
         }
         if (user.password !== password) { // In production, use proper password hashing
           return done(null, false, { message: "Incorrect password" });

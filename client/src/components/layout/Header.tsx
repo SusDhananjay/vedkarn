@@ -50,16 +50,30 @@ export default function Header() {
                 How It Works
               </Link>
               {isAuthenticated && (
-                <Link
-                  href="/dashboard"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    location === "/dashboard"
-                      ? "border-primary text-gray-900"
-                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                  }`}
-                >
-                  Dashboard
-                </Link>
+                <>
+                  <Link
+                    href="/dashboard"
+                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                      location === "/dashboard"
+                        ? "border-primary text-gray-900"
+                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    }`}
+                  >
+                    Dashboard
+                  </Link>
+                  {user?.userType === "admin" && (
+                    <Link
+                      href="/admin"
+                      className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                        location === "/admin"
+                          ? "border-primary text-gray-900"
+                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                      }`}
+                    >
+                      Admin Dashboard
+                    </Link>
+                  )}
+                </>
               )}
             </nav>
           </div>
@@ -98,9 +112,16 @@ export default function Header() {
                     Become a Mentor
                   </Link>
                   {isAuthenticated ? (
-                    <Link href="/dashboard" className="text-gray-700 hover:text-primary px-2 py-1 rounded-md">
-                      Dashboard
-                    </Link>
+                    <>
+                      <Link href="/dashboard" className="text-gray-700 hover:text-primary px-2 py-1 rounded-md">
+                        Dashboard
+                      </Link>
+                      {user?.userType === "admin" && (
+                        <Link href="/admin" className="text-gray-700 hover:text-primary px-2 py-1 rounded-md">
+                          Admin Dashboard
+                        </Link>
+                      )}
+                    </>
                   ) : (
                     <Button onClick={() => setShowAuthModal(true)} className="w-full">
                       Log In / Sign Up
