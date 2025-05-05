@@ -33,7 +33,7 @@ const getInitialsAvatar = (name: string) => {
   
   return (
     <div 
-      className="h-20 w-20 rounded-full flex items-center justify-center text-white font-bold text-xl"
+      className="h-20 w-20 rounded-full flex items-center justify-center text-gray-50 font-bold text-xl"
       style={{ backgroundColor: color }}
     >
       {initials}
@@ -77,7 +77,7 @@ export default function MentorCard({ mentor }: MentorCardProps) {
                   e.currentTarget.style.display = 'none';
                   e.currentTarget.parentElement!.appendChild(
                     document.createRange().createContextualFragment(
-                      `<div class="h-20 w-20 rounded-full flex items-center justify-center text-white font-bold text-xl bg-primary">${mentor.name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2)}</div>`
+                      `<div class="h-20 w-20 rounded-full flex items-center justify-center text-gray-50 font-bold text-xl bg-primary">${mentor.name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2)}</div>`
                     )
                   );
                 }}
