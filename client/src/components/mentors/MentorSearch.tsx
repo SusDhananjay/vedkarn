@@ -283,7 +283,7 @@ export default function MentorSearch() {
                   <SelectValue placeholder="Any University" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any University</SelectItem>
+                  <SelectItem value="any">Any University</SelectItem>
                   {allUniversities.map((university) => (
                     <SelectItem key={university} value={university}>{university}</SelectItem>
                   ))}
@@ -301,7 +301,7 @@ export default function MentorSearch() {
                   <SelectValue placeholder="Any Company" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any Company</SelectItem>
+                  <SelectItem value="any">Any Company</SelectItem>
                   {allCompanies.map((company) => (
                     <SelectItem key={company} value={company}>{company}</SelectItem>
                   ))}
@@ -319,7 +319,7 @@ export default function MentorSearch() {
                   <SelectValue placeholder="Any Expertise" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any Expertise</SelectItem>
+                  <SelectItem value="any">Any Expertise</SelectItem>
                   {EXPERTISE_AREAS.map((expertise) => (
                     <SelectItem key={expertise} value={expertise}>{expertise}</SelectItem>
                   ))}
@@ -337,7 +337,7 @@ export default function MentorSearch() {
                   <SelectValue placeholder="Any Language" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any Language</SelectItem>
+                  <SelectItem value="any">Any Language</SelectItem>
                   {LANGUAGES.map((language) => (
                     <SelectItem key={language} value={language}>{language}</SelectItem>
                   ))}
@@ -355,7 +355,7 @@ export default function MentorSearch() {
                   <SelectValue placeholder="Any Rating" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any Rating</SelectItem>
+                  <SelectItem value="any">Any Rating</SelectItem>
                   <SelectItem value="3">3+ Stars</SelectItem>
                   <SelectItem value="4">4+ Stars</SelectItem>
                   <SelectItem value="4.5">4.5+ Stars</SelectItem>
