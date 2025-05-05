@@ -116,7 +116,7 @@ export default function HowItWorks() {
               </ul>
             </div>
             <div className="px-8 pb-8 pt-2">
-              <Link href="/find-mentors">
+              <Link href="/how-it-works">
                 <Button variant="outline" className="w-full">Learn More</Button>
               </Link>
             </div>
@@ -195,10 +195,58 @@ export default function HowItWorks() {
           </div>
         </div>
 
+        {/* Group Session Promotion */}
+        <div className="bg-primary-50 rounded-xl shadow-md overflow-hidden mb-16">
+          <div className="md:flex items-center">
+            <div className="md:w-2/3 p-8">
+              <div className="uppercase tracking-wide text-sm text-primary font-semibold">Affordable Alternative</div>
+              <h3 className="mt-2 text-2xl font-bold text-gray-900">Group Sessions</h3>
+              <p className="mt-2 text-gray-600">
+                Can't afford a one-on-one session? Join our low-cost or free group sessions 
+                led by the same expert mentors. Learn alongside peers with similar goals.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <div className="bg-white rounded-full px-3 py-1 text-sm border border-primary/20 text-primary-700 flex items-center">
+                  <Users className="h-3.5 w-3.5 mr-1" />
+                  <span>Interactive group learning</span>
+                </div>
+                <div className="bg-white rounded-full px-3 py-1 text-sm border border-primary/20 text-primary-700 flex items-center">
+                  <BookOpen className="h-3.5 w-3.5 mr-1" />
+                  <span>Free webinars</span>
+                </div>
+                <div className="bg-white rounded-full px-3 py-1 text-sm border border-primary/20 text-primary-700 flex items-center">
+                  <Award className="h-3.5 w-3.5 mr-1" />
+                  <span>Low-cost workshops</span>
+                </div>
+              </div>
+              <div className="mt-6">
+                <Link href="/group-sessions">
+                  <Button className="mr-3">
+                    <Users className="mr-2 h-4 w-4" />
+                    Explore Group Sessions
+                  </Button>
+                </Link>
+                <Link href="/how-it-works">
+                  <Button variant="outline">Learn More</Button>
+                </Link>
+              </div>
+            </div>
+            <div className="md:w-1/3 p-8 hidden md:block">
+              <div className="bg-primary/5 rounded-xl h-full flex items-center justify-center p-4">
+                <img
+                  src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                  alt="Group mentorship session"
+                  className="rounded-lg shadow-md object-cover h-40 w-full"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* FAQ Teasers */}
         <div className="text-center mb-4">
           <h3 className="text-xl font-semibold text-gray-900">Have Questions?</h3>
-          <p className="text-gray-500 mt-2">Check out our <a href="#faq" className="text-primary hover:underline">Frequently Asked Questions</a> to learn more</p>
+          <p className="text-gray-500 mt-2">Check out our <a href="#faq" className="text-primary hover:underline">Frequently Asked Questions</a> or visit our <Link href="/how-it-works" className="text-primary hover:underline">detailed guide</Link></p>
         </div>
       </div>
     </section>
