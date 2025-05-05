@@ -35,11 +35,11 @@ import { cn } from "@/lib/utils";
 export default function MentorSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
-    university: "",
-    company: "",
-    expertise: "",
-    language: "",
-    rating: "",
+    university: "any",
+    company: "any",
+    expertise: "any",
+    language: "any",
+    rating: "any",
   });
   
   // State for expertise selection
@@ -84,27 +84,27 @@ export default function MentorSearch() {
   // Filter mentors based on the selected filters
   const mentors = allMentors?.filter(mentor => {
     // Filter by university
-    if (filters.university && mentor.university !== filters.university) {
+    if (filters.university && filters.university !== "any" && mentor.university !== filters.university) {
       return false;
     }
     
     // Filter by company
-    if (filters.company && mentor.company !== filters.company) {
+    if (filters.company && filters.company !== "any" && mentor.company !== filters.company) {
       return false;
     }
     
     // Filter by expertise - check if the mentor has the selected expertise in their array
-    if (filters.expertise && (!mentor.expertise || !mentor.expertise.includes(filters.expertise))) {
+    if (filters.expertise && filters.expertise !== "any" && (!mentor.expertise || !mentor.expertise.includes(filters.expertise))) {
       return false;
     }
     
     // Filter by language
-    if (filters.language && (!mentor.languages || !mentor.languages.includes(filters.language))) {
+    if (filters.language && filters.language !== "any" && (!mentor.languages || !mentor.languages.includes(filters.language))) {
       return false;
     }
     
     // Filter by rating
-    if (filters.rating && mentor.rating < parseFloat(filters.rating)) {
+    if (filters.rating && filters.rating !== "any" && mentor.rating < parseFloat(filters.rating)) {
       return false;
     }
     
@@ -137,11 +137,11 @@ export default function MentorSearch() {
   // Reset all filters
   const resetFilters = () => {
     setFilters({
-      university: "",
-      company: "",
-      expertise: "",
-      language: "",
-      rating: "",
+      university: "any",
+      company: "any",
+      expertise: "any",
+      language: "any",
+      rating: "any",
     });
     setSearchTerm("");
     setSelectedExpertise("");
@@ -369,7 +369,7 @@ export default function MentorSearch() {
               variant="outline" 
               onClick={resetFilters}
               className="inline-flex items-center"
-              disabled={!Object.values(filters).some(v => v !== "") && !searchTerm}
+              disabled={!Object.values(filters).some(v => v !== "any") && !searchTerm}
             >
               <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -389,7 +389,7 @@ export default function MentorSearch() {
           </div>
           
           {/* Active filters display */}
-          {(Object.values(filters).some(v => v !== "") || searchTerm) && (
+          {(Object.values(filters).some(v => v !== "any") || searchTerm) && (
             <div className="mt-4 flex flex-wrap gap-2 border-t pt-4 border-gray-100">
               <span className="text-sm text-gray-500">Active filters:</span>
               
@@ -402,11 +402,11 @@ export default function MentorSearch() {
                 </Badge>
               )}
               
-              {filters.university && (
+              {filters.university && filters.university !== "any" && (
                 <Badge variant="secondary" className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200">
                   University: {filters.university}
                   <button 
-                    onClick={() => setFilters(prev => ({ ...prev, university: "" }))} 
+                    onClick={() => setFilters(prev => ({ ...prev, university: "any" }))} 
                     className="ml-1 h-3 w-3 rounded-full text-gray-500 hover:text-gray-700"
                   >
                     ×
@@ -414,11 +414,11 @@ export default function MentorSearch() {
                 </Badge>
               )}
               
-              {filters.company && (
+              {filters.company && filters.company !== "any" && (
                 <Badge variant="secondary" className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200">
                   Company: {filters.company}
                   <button 
-                    onClick={() => setFilters(prev => ({ ...prev, company: "" }))} 
+                    onClick={() => setFilters(prev => ({ ...prev, company: "any" }))} 
                     className="ml-1 h-3 w-3 rounded-full text-gray-500 hover:text-gray-700"
                   >
                     ×
@@ -426,12 +426,12 @@ export default function MentorSearch() {
                 </Badge>
               )}
               
-              {filters.expertise && (
+              {filters.expertise && filters.expertise !== "any" && (
                 <Badge variant="secondary" className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200">
                   Expertise: {filters.expertise}
                   <button 
                     onClick={() => {
-                      setFilters(prev => ({ ...prev, expertise: "" }));
+                      setFilters(prev => ({ ...prev, expertise: "any" }));
                       setSelectedExpertise("");
                     }} 
                     className="ml-1 h-3 w-3 rounded-full text-gray-500 hover:text-gray-700"
@@ -441,11 +441,11 @@ export default function MentorSearch() {
                 </Badge>
               )}
               
-              {filters.language && (
+              {filters.language && filters.language !== "any" && (
                 <Badge variant="secondary" className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200">
                   Language: {filters.language}
                   <button 
-                    onClick={() => setFilters(prev => ({ ...prev, language: "" }))} 
+                    onClick={() => setFilters(prev => ({ ...prev, language: "any" }))} 
                     className="ml-1 h-3 w-3 rounded-full text-gray-500 hover:text-gray-700"
                   >
                     ×
@@ -453,11 +453,11 @@ export default function MentorSearch() {
                 </Badge>
               )}
               
-              {filters.rating && (
+              {filters.rating && filters.rating !== "any" && (
                 <Badge variant="secondary" className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200">
                   Min Rating: {filters.rating}
                   <button 
-                    onClick={() => setFilters(prev => ({ ...prev, rating: "" }))} 
+                    onClick={() => setFilters(prev => ({ ...prev, rating: "any" }))} 
                     className="ml-1 h-3 w-3 rounded-full text-gray-500 hover:text-gray-700"
                   >
                     ×
