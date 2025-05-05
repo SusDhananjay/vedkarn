@@ -14,6 +14,8 @@ import Dashboard from "@/pages/Dashboard";
 import Messages from "@/pages/Messages";
 import VideoSession from "@/pages/VideoSession";
 import BecomeAMentorPage from "@/pages/BecomeAMentorPage";
+import HowItWorks from "@/pages/HowItWorks";
+import GroupSessions from "@/pages/GroupSessions";
 import AdminDashboard from "@/pages/AdminDashboard";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 
@@ -44,6 +46,8 @@ function Router() {
       <Route path="/messages" component={Messages} />
       <Route path="/video-session/:id" component={VideoSession} />
       <Route path="/become-a-mentor" component={BecomeAMentorPage} />
+      <Route path="/how-it-works" component={HowItWorks} />
+      <Route path="/group-sessions" component={GroupSessions} />
       <Route component={NotFound} />
     </Switch>
   );

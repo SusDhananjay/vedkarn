@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "@/components/auth/AuthModal";
-import { Menu, X, BookOpen, User, LogOut } from "lucide-react";
+import { Menu, BookOpen, LogOut, Users } from "lucide-react";
 
 export default function Header() {
   const [location] = useLocation();
@@ -69,10 +69,25 @@ export default function Header() {
                     Find Mentors
                   </Link>
                   <Link
-                    href="/#how-it-works"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    href="/how-it-works"
+                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                      location === "/how-it-works"
+                        ? "border-primary text-gray-900"
+                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    }`}
                   >
                     How It Works
+                  </Link>
+                  <Link
+                    href="/group-sessions"
+                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                      location === "/group-sessions"
+                        ? "border-primary text-gray-900"
+                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    }`}
+                  >
+                    <Users className="h-4 w-4 mr-1" />
+                    Group Sessions
                   </Link>
                   {isAuthenticated && (
                     <Link
@@ -152,8 +167,12 @@ export default function Header() {
                       <Link href="/find-mentors" className="text-gray-700 hover:text-primary px-2 py-1 rounded-md">
                         Find Mentors
                       </Link>
-                      <Link href="/#how-it-works" className="text-gray-700 hover:text-primary px-2 py-1 rounded-md">
+                      <Link href="/how-it-works" className="text-gray-700 hover:text-primary px-2 py-1 rounded-md">
                         How It Works
+                      </Link>
+                      <Link href="/group-sessions" className="text-gray-700 hover:text-primary px-2 py-1 rounded-md">
+                        <Users className="h-4 w-4 inline mr-1" />
+                        Group Sessions
                       </Link>
                       <Link href="/become-a-mentor" className="text-gray-700 hover:text-primary px-2 py-1 rounded-md">
                         Become a Mentor
