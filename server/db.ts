@@ -5,11 +5,21 @@ import * as schema from "@shared/schema";
 
 neonConfig.webSocketConstructor = ws;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
+export const useMemoryStorage = !process.env.DATABASE_URL;
+
+// Only create a real database connection if DATABASE_URL is provided
+let pool, db;
+if (!useMemoryStorage) {
+  try {
+    pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    db = drizzle({ client: pool, schema });
+    console.log("Connected to PostgreSQL database");
+  } catch (error) {
+    console.error("Failed to connect to database:", error);
+    console.warn("Falling back to in-memory storage");
+  }
+} else {
+  console.warn("DATABASE_URL not set. Using in-memory storage.");
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = drizzle({ client: pool, schema });
+export { pool, db };
