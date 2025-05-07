@@ -52,7 +52,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterFormValues) => {
-      const response = await apiRequest("POST", "/api/auth/register", data);
+      const response = await apiRequest("POST", "/api/register", data);
       return response.json();
     },
     onSuccess: () => {
